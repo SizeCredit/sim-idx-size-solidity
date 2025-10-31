@@ -1,24 +1,12 @@
-import { poolCreated } from "./db/schema/Listener"; // Adjust the import path as necessary
-import { types, db, App, middlewares } from "@duneanalytics/sim-idx"; // Import schema to ensure it's registered
+import { App, middlewares } from "@duneanalytics/sim-idx";
+import recentEventsRoute from "./routes/recent-events";
+import liquidatableRoute from "./routes/liquidatable";
 
 const app = App.create();
 app.use("*", middlewares.authentication);
 
-app.get("/*", async (c) => {
-  try {
-    const result = await db
-      .client(c)
-      .select()
-      .from(poolCreated)
-      .limit(5);
-
-    return Response.json({
-      result: result,
-    });
-  } catch (e) {
-    console.error("Database operation failed:", e);
-    return Response.json({ error: (e as Error).message }, { status: 500 });
-  }
-});
+// Mount routes
+app.route("/", recentEventsRoute);
+app.route("/liquidatable", liquidatableRoute);
 
 export default app;
