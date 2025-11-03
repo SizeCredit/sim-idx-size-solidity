@@ -1,16 +1,14 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.23;
 
 import "sim-idx-sol/Simidx.sol";
 import "sim-idx-generated/Generated.sol";
 
-import {ISizeFactory} from "../lib/size-solidity/src/factory/interfaces/ISizeFactory.sol";
-import {ISize} from "../lib/size-solidity/src/market/interfaces/ISize.sol";
-import {ISizeView} from "../lib/size-solidity/src/market/interfaces/ISizeView.sol";
-import {DataView} from "../lib/size-solidity/src/market/SizeViewData.sol";
-import {
-    DEBT_POSITION_ID_START, DebtPosition, LoanStatus
-} from "../lib/size-solidity/src/market/libraries/LoanLibrary.sol";
+import {ISizeFactory} from "./deps/ISizeFactory.sol";
+import {ISize} from "./deps/ISize.sol";
+import {ISizeView} from "./deps/ISizeView.sol";
+import {DataView} from "./deps/DataView.sol";
+import {DEBT_POSITION_ID_START, DebtPosition, LoanStatus} from "./deps/LoanLibrary.sol";
 
 contract BlockListener is Raw$OnBlock {
     event DebtPositionIsLiquidatable(
@@ -39,7 +37,7 @@ contract BlockListener is Raw$OnBlock {
             ? ISizeFactory(ETHEREUM_SIZE_FACTORY).getMarkets()
             : block.chainid == 8453 ? ISizeFactory(BASE_SIZE_FACTORY).getMarkets() : new ISize[](0);
         for (uint256 i = 0; i < markets.length; i++) {
-            ISizeView size = ISizeView(address(markets[i]));
+            ISizeView size = markets[i];
             DataView memory data = size.data();
             uint256 nextDebtPositionId = data.nextDebtPositionId;
             for (uint256 j = DEBT_POSITION_ID_START; j < nextDebtPositionId; j++) {

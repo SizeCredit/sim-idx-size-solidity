@@ -4,6 +4,3 @@
 [submodule "listeners/lib/sim-idx-sol"]
 	path = listeners/lib/sim-idx-sol
 	url = https://github.com/duneanalytics/sim-idx-sol
-[submodule "listeners/lib/size-solidity"]
-	path = listeners/lib/size-solidity
-	url = https://github.com/SizeCredit/size-solidity
