@@ -9,9 +9,3 @@ struct DebtPosition {
     uint256 dueDate;
     uint256 liquidityIndexAtRepayment;
 }
-
-enum LoanStatus {
-    ACTIVE,
-    OVERDUE,
-    REPAID
-}
